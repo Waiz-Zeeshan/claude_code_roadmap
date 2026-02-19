@@ -655,7 +655,6 @@ a:hover { text-decoration: underline; }
 .day-card[data-phase="3"] .deliverable-icon { background: var(--phase3-bg); }
 .day-card[data-phase="4"] .deliverable-icon { background: var(--phase4-bg); }
 
-.deliverable-content {}
 .deliverable-label {
   font-family: 'DM Mono', monospace;
   font-size: 9px;
@@ -668,6 +667,15 @@ a:hover { text-decoration: underline; }
   font-size: 13px;
   color: var(--text2);
   line-height: 1.5;
+}
+
+/* Self-check / reflection — distinct "pause and check" block */
+.content-section.self-check {
+  padding: 14px 18px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-top: 20px;
 }
 
 /* Fast track callout */
@@ -920,6 +928,74 @@ a:hover { text-decoration: underline; }
 .resource-link:hover { text-decoration: underline; }
 
 /* ============================================================
+   TAB BAR & PANELS
+   ============================================================ */
+.tab-bar {
+  position: relative;
+  z-index: 10;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+}
+
+.tab-bar-inner {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.tab {
+  background: none;
+  border: none;
+  font-family: 'Syne', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text2);
+  cursor: pointer;
+  padding: 16px 0;
+  position: relative;
+  transition: color 0.2s;
+}
+
+.tab:hover {
+  color: var(--text);
+}
+
+.tab.active {
+  color: var(--accent);
+}
+
+.tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--accent);
+}
+
+.tab-sep {
+  color: var(--border2);
+  font-size: 12px;
+  user-select: none;
+}
+
+.tab-panel {
+  display: none;
+}
+
+.tab-panel.active {
+  display: block;
+}
+
+@media (max-width: 700px) {
+  .tab-bar-inner { padding: 0 16px; }
+}
+
+/* ============================================================
    ANIMATIONS
    ============================================================ */
 @keyframes slideUp {
@@ -1011,10 +1087,22 @@ a:hover { text-decoration: underline; }
 </header>
 
 <!-- ============================================================
+     TAB BAR
+     ============================================================ -->
+<nav class="tab-bar" aria-label="Main sections">
+  <div class="tab-bar-inner">
+    <button type="button" class="tab active" data-tab="roadmap" id="tab-roadmap">Roadmap</button>
+    <span class="tab-sep" aria-hidden="true">|</span>
+    <button type="button" class="tab" data-tab="resources" id="tab-resources">Resources</button>
+  </div>
+</nav>
+
+<!-- ============================================================
      MAIN CONTENT
      ============================================================ -->
 <main class="main" id="main">
 
+  <div id="panel-roadmap" class="tab-panel active">
   <!-- ═══════════════════════════════════════
        WEEK 1
        ═══════════════════════════════════════ -->
@@ -1053,6 +1141,15 @@ a:hover { text-decoration: underline; }
     <div class="day-body">
       <div class="day-content">
         <div class="content-section">
+          <div class="section-label">Learning outcomes</div>
+          <ul class="topic-list">
+            <li class="topic-item"><span class="topic-bullet"></span>By the end of this day you will be able to install and run Claude Code in a real project and explain the plan→act→verify loop.</li>
+            <li class="topic-item"><span class="topic-bullet"></span>Explain the permission model and when to use trust levels.</li>
+            <li class="topic-item"><span class="topic-bullet"></span>Ship one real ticket with Claude Code and review every change in the diff.</li>
+          </ul>
+        </div>
+
+        <div class="content-section">
           <div class="section-label">Core Topics</div>
           <ul class="topic-list">
             <li class="topic-item"><span class="topic-bullet"></span>Install via npm (<code>npm install -g @anthropic-ai/claude-code</code>), Node 18+, authenticate</li>
@@ -1070,6 +1167,14 @@ a:hover { text-decoration: underline; }
             <div class="fast-track-label">Fast Track — Already used Claude Code?</div>
             <div class="fast-track-text">Skip install. Jump straight to the permission model deep-dive and spend the second half on CLAUDE.md architecture planning for Day 2.</div>
           </div>
+        </div>
+
+        <div class="content-section self-check">
+          <div class="section-label">Self-check</div>
+          <ul class="topic-list">
+            <li class="topic-item"><span class="topic-bullet"></span>Can you explain how Claude Code is different from Cursor or Copilot?</li>
+            <li class="topic-item"><span class="topic-bullet"></span>Did you run Claude on a real ticket and review each change? What would you do differently next time?</li>
+          </ul>
         </div>
 
         <div class="deliverable">
@@ -1102,6 +1207,15 @@ a:hover { text-decoration: underline; }
     </div>
     <div class="day-body">
       <div class="day-content">
+        <div class="content-section">
+          <div class="section-label">Learning outcomes</div>
+          <ul class="topic-list">
+            <li class="topic-item"><span class="topic-bullet"></span>By the end of this day you will be able to write CLAUDE.md at global, project, and subdirectory levels.</li>
+            <li class="topic-item"><span class="topic-bullet"></span>Describe what belongs in CLAUDE.md (architecture, conventions, key commands, prohibitions).</li>
+            <li class="topic-item"><span class="topic-bullet"></span>Ship a real PR using Claude Code and peer-review CLAUDE.md with your team.</li>
+          </ul>
+        </div>
+
         <div class="content-section">
           <div class="section-label">Core Topics</div>
           <ul class="topic-list">
@@ -1141,6 +1255,14 @@ a:hover { text-decoration: underline; }
           </div>
         </div>
 
+        <div class="content-section self-check">
+          <div class="section-label">Self-check</div>
+          <ul class="topic-list">
+            <li class="topic-item"><span class="topic-bullet"></span>Do you have CLAUDE.md at all three levels? Can you explain what belongs in "Never Do" vs "Conventions"?</li>
+            <li class="topic-item"><span class="topic-bullet"></span>Have you had someone else review your CLAUDE.md?</li>
+          </ul>
+        </div>
+
         <div class="deliverable">
           <div class="deliverable-icon">🗂️</div>
           <div class="deliverable-content">
@@ -1172,6 +1294,15 @@ a:hover { text-decoration: underline; }
     <div class="day-body">
       <div class="day-content">
         <div class="content-section">
+          <div class="section-label">Learning outcomes</div>
+          <ul class="topic-list">
+            <li class="topic-item"><span class="topic-bullet"></span>By the end of this day you will be able to use Plan mode (Shift+Tab) before non-trivial tasks and apply a spec→todo→code flow.</li>
+            <li class="topic-item"><span class="topic-bullet"></span>Reference files effectively (@file, line numbers) and use /clear for context hygiene.</li>
+            <li class="topic-item"><span class="topic-bullet"></span>Explain why context noise degrades output and when to clear.</li>
+          </ul>
+        </div>
+
+        <div class="content-section">
           <div class="section-label">Core Topics</div>
           <ul class="topic-list">
             <li class="topic-item"><span class="topic-bullet"></span><strong>Plan mode is non-negotiable.</strong> Shift+Tab before every non-trivial task</li>
@@ -1202,6 +1333,14 @@ a:hover { text-decoration: underline; }
             <div class="fast-track-text">Skip basics. Build a custom slash command for your team's most common task pattern (e.g., <code>/new-feature</code> that auto-generates spec.md + todo.md).</div>
           </div>
         </div>
+
+        <div class="content-section self-check">
+          <div class="section-label">Self-check</div>
+          <ul class="topic-list">
+            <li class="topic-item"><span class="topic-bullet"></span>Before starting a task, do you use Plan mode? Can you write a spec.md and todo.md before coding?</li>
+            <li class="topic-item"><span class="topic-bullet"></span>Do you use /clear when context feels noisy?</li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
@@ -1225,6 +1364,15 @@ a:hover { text-decoration: underline; }
     </div>
     <div class="day-body">
       <div class="day-content">
+        <div class="content-section">
+          <div class="section-label">Learning outcomes</div>
+          <ul class="topic-list">
+            <li class="topic-item"><span class="topic-bullet"></span>By the end of this day you will be able to use key slash commands and configure .claude/settings.json (allow/deny, model).</li>
+            <li class="topic-item"><span class="topic-bullet"></span>Apply git worktrees and commit before every Claude task.</li>
+            <li class="topic-item"><span class="topic-bullet"></span>Choose output mode (explanatory vs learning) and model (Sonnet vs Opus) for the task.</li>
+          </ul>
+        </div>
+
         <div class="content-section">
           <div class="section-label">Core Topics</div>
           <ul class="topic-list">
@@ -1252,6 +1400,14 @@ a:hover { text-decoration: underline; }
   <span class="str">"model"</span>: <span class="str">"claude-sonnet-4-6"</span>
 }</pre>
           </div>
+        </div>
+
+        <div class="content-section self-check">
+          <div class="section-label">Self-check</div>
+          <ul class="topic-list">
+            <li class="topic-item"><span class="topic-bullet"></span>Do you have a settings.json that matches your team's safety needs? Do you commit (or use worktrees) before every Claude task?</li>
+            <li class="topic-item"><span class="topic-bullet"></span>Can you explain when to use Sonnet vs Opus?</li>
+          </ul>
         </div>
 
         <div class="deliverable">
@@ -1284,6 +1440,15 @@ a:hover { text-decoration: underline; }
     </div>
     <div class="day-body">
       <div class="day-content">
+        <div class="content-section">
+          <div class="section-label">Learning outcomes</div>
+          <ul class="topic-list">
+            <li class="topic-item"><span class="topic-bullet"></span>By the end of this day you will be able to explain why context quality drives output quality and how to pack context (constraints, pitfalls, examples).</li>
+            <li class="topic-item"><span class="topic-bullet"></span>Set up Cozempic (init, guard, diagnose) and interpret bloat breakdown.</li>
+            <li class="topic-item"><span class="topic-bullet"></span>Use layered CLAUDE.md and MCP for context.</li>
+          </ul>
+        </div>
+
         <div class="content-section">
           <div class="section-label">Context Engineering (~2 hrs)</div>
           <ul class="topic-list">
@@ -1359,6 +1524,14 @@ a:hover { text-decoration: underline; }
           </div>
         </div>
 
+        <div class="content-section self-check">
+          <div class="section-label">Self-check</div>
+          <ul class="topic-list">
+            <li class="topic-item"><span class="topic-bullet"></span>Is Cozempic installed and is the guard daemon running? Can you run diagnose on a session and read the bloat breakdown?</li>
+            <li class="topic-item"><span class="topic-bullet"></span>Do you know why Cozempic matters for Week 2 Agent Teams?</li>
+          </ul>
+        </div>
+
         <div class="deliverable">
           <div class="deliverable-icon">🛡️</div>
           <div class="deliverable-content">
@@ -1408,6 +1581,15 @@ a:hover { text-decoration: underline; }
     <div class="day-body">
       <div class="day-content">
         <div class="content-section">
+          <div class="section-label">Learning outcomes</div>
+          <ul class="topic-list">
+            <li class="topic-item"><span class="topic-bullet"></span>By the end of this day you will be able to enable Agent Teams and describe the roles of Team Lead, Teammates, shared task list, and mailbox.</li>
+            <li class="topic-item"><span class="topic-bullet"></span>Explain the difference between subagents and Teammates (reporting vs peer-to-peer).</li>
+            <li class="topic-item"><span class="topic-bullet"></span>Run a parallel code review with multiple teammates and compare reports.</li>
+          </ul>
+        </div>
+
+        <div class="content-section">
           <div class="section-label">Enable Agent Teams</div>
           <div class="code-block">
             <div class="code-header">
@@ -1446,6 +1628,14 @@ a:hover { text-decoration: underline; }
           </div>
         </div>
 
+        <div class="content-section self-check">
+          <div class="section-label">Self-check</div>
+          <ul class="topic-list">
+            <li class="topic-item"><span class="topic-bullet"></span>Can you explain the difference between subagents and Teammates? Have you run at least one multi-agent task (e.g. the 4-lens code review)?</li>
+            <li class="topic-item"><span class="topic-bullet"></span>Where did reports agree or conflict?</li>
+          </ul>
+        </div>
+
         <div class="deliverable">
           <div class="deliverable-icon">🤖</div>
           <div class="deliverable-content">
@@ -1476,6 +1666,15 @@ a:hover { text-decoration: underline; }
     </div>
     <div class="day-body">
       <div class="day-content">
+        <div class="content-section">
+          <div class="section-label">Learning outcomes</div>
+          <ul class="topic-list">
+            <li class="topic-item"><span class="topic-bullet"></span>By the end of this day you will be able to write a spawn prompt that includes scope, acceptance criteria, completion action, and who to report to.</li>
+            <li class="topic-item"><span class="topic-bullet"></span>Configure and use a display mode (tmux or iTerm2) for teammates.</li>
+            <li class="topic-item"><span class="topic-bullet"></span>Shut down teammates cleanly and use cozempic checkpoint before cleanup.</li>
+          </ul>
+        </div>
+
         <div class="content-section">
           <div class="section-label">Spawn Prompts — The Most Important Skill</div>
           <ul class="topic-list">
@@ -1514,6 +1713,14 @@ a:hover { text-decoration: underline; }
           </ul>
         </div>
 
+        <div class="content-section self-check">
+          <div class="section-label">Self-check</div>
+          <ul class="topic-list">
+            <li class="topic-item"><span class="topic-bullet"></span>Does your spawn prompt include files/scope, acceptance criteria, and "who to report to"? Is your display mode set as default and tested?</li>
+            <li class="topic-item"><span class="topic-bullet"></span>Do you run cozempic checkpoint before shutting down?</li>
+          </ul>
+        </div>
+
         <div class="deliverable">
           <div class="deliverable-icon">🖥️</div>
           <div class="deliverable-content">
@@ -1544,6 +1751,15 @@ a:hover { text-decoration: underline; }
     </div>
     <div class="day-body">
       <div class="day-content">
+        <div class="content-section">
+          <div class="section-label">Learning outcomes</div>
+          <ul class="topic-list">
+            <li class="topic-item"><span class="topic-bullet"></span>By the end of this day you will be able to run a competing-hypotheses debugging swarm and document which hypothesis was right and how convergence compared to sequential debugging.</li>
+            <li class="topic-item"><span class="topic-bullet"></span>Create a contract.md (endpoints, data shapes, errors) before spawning frontend/backend agents.</li>
+            <li class="topic-item"><span class="topic-bullet"></span>Explain why contract-first prevents integration failures.</li>
+          </ul>
+        </div>
+
         <div class="content-section">
           <div class="section-label">The Competing Hypotheses Pattern</div>
           <p style="font-size:13px; color:var(--text2); line-height:1.6; margin-bottom:14px;">The killer use case that single agents structurally can't replicate. Sequential investigation anchors on the first plausible theory. Multiple independent investigators trying to disprove each other converge on actual root causes significantly faster.</p>
@@ -1586,6 +1802,14 @@ a:hover { text-decoration: underline; }
           </div>
         </div>
 
+        <div class="content-section self-check">
+          <div class="section-label">Self-check</div>
+          <ul class="topic-list">
+            <li class="topic-item"><span class="topic-bullet"></span>Can you design a 3-agent debugging swarm for a real issue? Do you use contract.md before spawning agents that will integrate?</li>
+            <li class="topic-item"><span class="topic-bullet"></span>What would you put in contract.md for your next task?</li>
+          </ul>
+        </div>
+
         <div class="deliverable">
           <div class="deliverable-icon">🔬</div>
           <div class="deliverable-content">
@@ -1617,6 +1841,15 @@ a:hover { text-decoration: underline; }
     <div class="day-body">
       <div class="day-content">
         <div class="content-section">
+          <div class="section-label">Learning outcomes</div>
+          <ul class="topic-list">
+            <li class="topic-item"><span class="topic-bullet"></span>By the end of this day you will be able to use TeammateIdle and TaskCompleted hooks with exit code 2 to enforce standards.</li>
+            <li class="topic-item"><span class="topic-bullet"></span>Apply model mixing (Opus for lead, Sonnet for teammates) and explain when multi-agent cost is worth it.</li>
+            <li class="topic-item"><span class="topic-bullet"></span>Choose and apply feature squads, research swarms, or builder-validator patterns.</li>
+          </ul>
+        </div>
+
+        <div class="content-section">
           <div class="section-label">Team-Specific Hooks</div>
           <ul class="topic-list">
             <li class="topic-item"><span class="topic-bullet"></span><strong>TeammateIdle</strong>: runs when a teammate is about to go idle. Exit code 2 sends feedback and keeps them working. Use to enforce "don't stop until tests pass."</li>
@@ -1641,6 +1874,14 @@ a:hover { text-decoration: underline; }
             <li class="topic-item"><span class="topic-bullet"></span><strong>Feature squads</strong> — each teammate owns a separate module, no shared files. Zero merge conflicts.</li>
             <li class="topic-item"><span class="topic-bullet"></span><strong>Research swarms</strong> — 4–6 agents investigating different aspects of the same problem, sharing findings.</li>
             <li class="topic-item"><span class="topic-bullet"></span><strong>Builder-validator chains</strong> — one agent builds, another immediately reviews and tests. Feedback loop without the lead intervening.</li>
+          </ul>
+        </div>
+
+        <div class="content-section self-check">
+          <div class="section-label">Self-check</div>
+          <ul class="topic-list">
+            <li class="topic-item"><span class="topic-bullet"></span>Do you have a TeammateIdle hook that enforces "tests pass before idle"? Can you explain when multi-agent overhead is justified vs when a single session is better?</li>
+            <li class="topic-item"><span class="topic-bullet"></span>Have you reviewed token cost for this week?</li>
           </ul>
         </div>
 
@@ -1675,6 +1916,15 @@ a:hover { text-decoration: underline; }
     <div class="day-body">
       <div class="day-content">
         <div class="content-section">
+          <div class="section-label">Learning outcomes</div>
+          <ul class="topic-list">
+            <li class="topic-item"><span class="topic-bullet"></span>By the end of this day you will be able to run one full Agent Teams ticket solo (Cozempic guard, CLAUDE.md, plan mode) without assistance.</li>
+            <li class="topic-item"><span class="topic-bullet"></span>Contribute to the team retrospective and token cost analysis.</li>
+            <li class="topic-item"><span class="topic-bullet"></span>Contribute to AGENT-TEAMS-PLAYBOOK.md (patterns, failure modes, spawn templates, Cozempic config).</li>
+          </ul>
+        </div>
+
+        <div class="content-section">
           <div class="section-label">Morning — Open Implementation (~3 hrs)</div>
           <ul class="topic-list">
             <li class="topic-item"><span class="topic-bullet"></span>Each engineer picks one real outstanding ticket and runs it as an Agent Teams task from scratch.</li>
@@ -1694,6 +1944,14 @@ a:hover { text-decoration: underline; }
           </ul>
         </div>
 
+        <div class="content-section self-check">
+          <div class="section-label">Self-check</div>
+          <ul class="topic-list">
+            <li class="topic-item"><span class="topic-bullet"></span>Did you ship one ticket end-to-end with Agent Teams without assistance? Have you documented failure modes and playbook updates?</li>
+            <li class="topic-item"><span class="topic-bullet"></span>Is the playbook ready for the next engineer to onboard from?</li>
+          </ul>
+        </div>
+
         <div class="deliverable">
           <div class="deliverable-icon">📖</div>
           <div class="deliverable-content">
@@ -1704,7 +1962,9 @@ a:hover { text-decoration: underline; }
       </div>
     </div>
   </div>
+  </div><!-- end #panel-roadmap -->
 
+  <div id="panel-resources" class="tab-panel">
   <!-- ═══════════════════════════════════════
        RESOURCES
        ═══════════════════════════════════════ -->
@@ -1737,8 +1997,50 @@ a:hover { text-decoration: underline; }
       <div class="resource-card">
         <div class="resource-type">Community</div>
         <div class="resource-name">Awesome Claude Code</div>
-        <div class="resource-desc">Curated list of skills, hooks, slash commands, and orchestration tools maintained by the community.</div>
+        <div class="resource-desc">20K+ stars. Master directory of every Claude Code skill, plugin, hook, and tool.</div>
         <a href="https://github.com/hesreallyhim/awesome-claude-code" target="_blank" class="resource-link">github.com →</a>
+      </div>
+
+      <div class="resource-card">
+        <div class="resource-type">Skill</div>
+        <div class="resource-name">Obsidian Skills</div>
+        <div class="resource-desc">Built by Obsidian's CEO. Lets Claude Code create, organize, and manage your vault as an AI-powered second brain. 7K+ stars.</div>
+        <a href="https://github.com/kepano/obsidian-skills" target="_blank" class="resource-link">github.com/kepano/obsidian-skills →</a>
+      </div>
+
+      <div class="resource-card">
+        <div class="resource-type">Tool</div>
+        <div class="resource-name">n8n-MCP</div>
+        <div class="resource-desc">Gives Claude Code deep knowledge of all 1,084 n8n nodes so it can build production-ready automation workflows instead of guessing at configs.</div>
+        <a href="https://github.com/czlonkowski/n8n-mcp" target="_blank" class="resource-link">github.com/czlonkowski/n8n-mcp →</a>
+      </div>
+
+      <div class="resource-card">
+        <div class="resource-type">Skill</div>
+        <div class="resource-name">UI/UX Pro Max Skill</div>
+        <div class="resource-desc">16K+ stars. 50+ UI styles, 97 color palettes, 57 font pairings across 9 tech stacks — autogenerates a design system so your app doesn't look like AI slop.</div>
+        <a href="https://github.com/nextlevelbuilder/ui-ux-pro-max-skill" target="_blank" class="resource-link">github.com/nextlevelbuilder/ui-ux-pro-max-skill →</a>
+      </div>
+
+      <div class="resource-card">
+        <div class="resource-type">Tool</div>
+        <div class="resource-name">Claude Mem</div>
+        <div class="resource-desc">20K+ stars in 2 days. Automatically captures what Claude does during sessions and injects relevant context into future sessions. Persistent memory for Claude Code.</div>
+        <a href="https://github.com/thedotmack/claude-mem" target="_blank" class="resource-link">github.com/thedotmack/claude-mem →</a>
+      </div>
+
+      <div class="resource-card">
+        <div class="resource-type">Framework</div>
+        <div class="resource-name">GSD — Get Shit Done</div>
+        <div class="resource-desc">Spec-driven development: interviews you, builds the plan, then executes phase by phase with verification. One command: npx get-shit-done-cc.</div>
+        <a href="https://github.com/glittercowboy/get-shit-done" target="_blank" class="resource-link">github.com/glittercowboy/get-shit-done →</a>
+      </div>
+
+      <div class="resource-card">
+        <div class="resource-type">Skill</div>
+        <div class="resource-name">Superpowers</div>
+        <div class="resource-desc">28K+ stars. Auto-enforces brainstorming, planning, TDD, and code review into every Claude Code session — no configuration needed.</div>
+        <a href="https://github.com/obra/superpowers" target="_blank" class="resource-link">github.com/obra/superpowers →</a>
       </div>
 
       <div class="resource-card">
@@ -1770,6 +2072,7 @@ a:hover { text-decoration: underline; }
       </div>
     </div>
   </div>
+  </div><!-- end #panel-resources -->
 
 </main>
 
@@ -1796,6 +2099,30 @@ window.addEventListener('scroll', () => {
   const scrolled = (winScroll / height) * 100;
   document.getElementById('progressBar').style.width = scrolled + '%';
 });
+
+// ── Tab switching (Roadmap | Resources) ────────────────────────
+function showTab(tabId) {
+  const isResources = tabId === 'resources';
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tabId));
+  document.getElementById('panel-roadmap').classList.toggle('active', !isResources);
+  document.getElementById('panel-resources').classList.toggle('active', isResources);
+  if (isResources) {
+    window.location.hash = 'resources';
+    try { sessionStorage.setItem('claude-roadmap-tab', 'resources'); } catch (e) {}
+  } else {
+    if (window.location.hash === '#resources') history.replaceState(null, '', window.location.pathname);
+    try { sessionStorage.setItem('claude-roadmap-tab', 'roadmap'); } catch (e) {}
+  }
+}
+
+document.getElementById('tab-roadmap').addEventListener('click', () => showTab('roadmap'));
+document.getElementById('tab-resources').addEventListener('click', () => showTab('resources'));
+
+(function initTab() {
+  const hash = window.location.hash === '#resources';
+  const stored = (function() { try { return sessionStorage.getItem('claude-roadmap-tab'); } catch (e) { return null; } })();
+  if (hash || stored === 'resources') showTab('resources');
+})();
 
 // ── Day Cards Toggle ──────────────────────────────────────────
 function toggleCard(day) {
