@@ -1,0 +1,1949 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code — 2-Week Engineering Roadmap</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   CSS CUSTOM PROPERTIES — DUAL THEME
+   ============================================================ */
+:root {
+  --transition-theme: background 0.4s ease, color 0.4s ease, border-color 0.4s ease;
+}
+
+[data-theme="dark"] {
+  --bg:          #0d0e14;
+  --bg2:         #13141d;
+  --bg3:         #181924;
+  --surface:     #1c1d2b;
+  --surface2:    #222336;
+  --border:      #2a2b3d;
+  --border2:     #363750;
+  --text:        #e8e9f5;
+  --text2:       #9fa0b8;
+  --text3:       #5c5d7a;
+  --accent:      #e8825c;
+  --accent-glow: rgba(232,130,92,0.18);
+  --coral:       #e8825c;
+  --teal:        #4ecdc4;
+  --blue:        #6c8ef5;
+  --gold:        #f0c040;
+  --phase1:      #e8825c;
+  --phase2:      #f0c040;
+  --phase3:      #4ecdc4;
+  --phase4:      #6c8ef5;
+  --phase1-bg:   rgba(232,130,92,0.08);
+  --phase2-bg:   rgba(240,192,64,0.08);
+  --phase3-bg:   rgba(78,205,196,0.08);
+  --phase4-bg:   rgba(108,142,245,0.08);
+  --success:     #5af097;
+  --header-mesh: radial-gradient(ellipse at 20% 50%, rgba(232,130,92,0.12) 0%, transparent 60%),
+                 radial-gradient(ellipse at 80% 20%, rgba(108,142,245,0.10) 0%, transparent 50%),
+                 radial-gradient(ellipse at 50% 80%, rgba(78,205,196,0.08) 0%, transparent 50%);
+  --card-shadow: 0 1px 3px rgba(0,0,0,0.4), 0 0 0 1px var(--border);
+  --card-shadow-hover: 0 8px 32px rgba(0,0,0,0.5), 0 0 0 1px var(--border2);
+  --logo-filter: none;
+}
+
+[data-theme="light"] {
+  --bg:          #faf8f4;
+  --bg2:         #f4f1eb;
+  --bg3:         #ede9e0;
+  --surface:     #ffffff;
+  --surface2:    #f8f5ef;
+  --border:      #e0dbd0;
+  --border2:     #c8c2b5;
+  --text:        #1a1814;
+  --text2:       #5a5448;
+  --text3:       #9a9082;
+  --accent:      #c4622a;
+  --accent-glow: rgba(196,98,42,0.12);
+  --coral:       #c4622a;
+  --teal:        #1a7a74;
+  --blue:        #2d50c8;
+  --gold:        #8a6800;
+  --phase1:      #c4622a;
+  --phase2:      #8a6800;
+  --phase3:      #1a7a74;
+  --phase4:      #2d50c8;
+  --phase1-bg:   rgba(196,98,42,0.07);
+  --phase2-bg:   rgba(138,104,0,0.07);
+  --phase3-bg:   rgba(26,122,116,0.07);
+  --phase4-bg:   rgba(45,80,200,0.07);
+  --success:     #1a7040;
+  --header-mesh: radial-gradient(ellipse at 20% 50%, rgba(196,98,42,0.08) 0%, transparent 60%),
+                 radial-gradient(ellipse at 80% 20%, rgba(45,80,200,0.07) 0%, transparent 50%),
+                 radial-gradient(ellipse at 50% 80%, rgba(26,122,116,0.06) 0%, transparent 50%);
+  --card-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 0 0 1px var(--border);
+  --card-shadow-hover: 0 8px 24px rgba(0,0,0,0.12), 0 0 0 1px var(--border2);
+  --logo-filter: invert(1) brightness(0.3);
+}
+
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Syne', sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  transition: var(--transition-theme);
+  overflow-x: hidden;
+}
+
+code, .mono {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.85em;
+}
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ============================================================
+   CANVAS — NEURAL MESH BACKGROUND
+   ============================================================ */
+#neural-canvas {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.35;
+}
+
+/* ============================================================
+   THEME TOGGLE
+   ============================================================ */
+.theme-toggle {
+  position: fixed;
+  top: 20px; right: 24px;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 50px;
+  padding: 6px 14px 6px 8px;
+  cursor: pointer;
+  transition: var(--transition-theme), box-shadow 0.2s;
+  box-shadow: var(--card-shadow);
+  user-select: none;
+}
+.theme-toggle:hover { box-shadow: var(--card-shadow-hover); }
+
+.toggle-track {
+  width: 34px; height: 18px;
+  border-radius: 9px;
+  background: var(--border2);
+  position: relative;
+  transition: background 0.3s;
+}
+[data-theme="light"] .toggle-track { background: var(--accent); }
+
+.toggle-thumb {
+  position: absolute;
+  top: 2px; left: 2px;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--text);
+  transition: transform 0.3s, background 0.3s;
+}
+[data-theme="light"] .toggle-thumb { transform: translateX(16px); background: #fff; }
+
+.toggle-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  color: var(--text2);
+}
+
+/* ============================================================
+   PROGRESS BAR — TOP
+   ============================================================ */
+.progress-bar {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--phase1), var(--phase2), var(--phase3), var(--phase4));
+  z-index: 999;
+  width: 0%;
+  transition: width 0.1s linear;
+}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+.header {
+  position: relative;
+  z-index: 10;
+  padding: 100px 60px 80px;
+  overflow: hidden;
+  background: var(--header-mesh);
+}
+
+.header-inner { max-width: 900px; }
+
+.header-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.anthropic-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 6px 12px;
+}
+
+.anthropic-logo {
+  width: 18px; height: 18px;
+  /* Anthropic ◆ shaped SVG */
+}
+
+.badge-text {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text3);
+}
+
+.header-divider {
+  width: 1px; height: 20px;
+  background: var(--border);
+}
+
+.header-date {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text3);
+}
+
+.header h1 {
+  font-family: 'Instrument Serif', serif;
+  font-size: clamp(44px, 6vw, 78px);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -1.5px;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.header h1 em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.header-sub {
+  font-size: 16px;
+  color: var(--text2);
+  max-width: 560px;
+  margin-top: 20px;
+  line-height: 1.7;
+}
+
+.header-stats {
+  display: flex;
+  gap: 0;
+  margin-top: 48px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  width: fit-content;
+  background: var(--surface);
+}
+
+.stat {
+  padding: 18px 32px;
+  border-right: 1px solid var(--border);
+  text-align: center;
+}
+.stat:last-child { border-right: none; }
+
+.stat-value {
+  font-family: 'Instrument Serif', serif;
+  font-size: 32px;
+  line-height: 1;
+  color: var(--text);
+  letter-spacing: -1px;
+}
+
+.stat-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-top: 4px;
+}
+
+/* ============================================================
+   MAIN LAYOUT
+   ============================================================ */
+.main {
+  position: relative;
+  z-index: 10;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 60px 40px 120px;
+}
+
+/* ============================================================
+   WEEK HEADERS
+   ============================================================ */
+.week-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 40px;
+  margin-top: 80px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+}
+.week-header:first-child { margin-top: 0; }
+
+.week-number {
+  font-family: 'Instrument Serif', serif;
+  font-size: 72px;
+  line-height: 1;
+  letter-spacing: -3px;
+  color: var(--border2);
+  min-width: 80px;
+  user-select: none;
+}
+
+.week-info { flex: 1; }
+
+.week-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: 28px;
+  font-weight: 400;
+  letter-spacing: -0.5px;
+  color: var(--text);
+}
+
+.week-subtitle {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-top: 4px;
+}
+
+.week-progress-track {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.week-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--border2);
+  border: 1px solid var(--border);
+  transition: background 0.3s, border-color 0.3s, transform 0.2s;
+  cursor: default;
+}
+.week-dot.done {
+  background: var(--success);
+  border-color: var(--success);
+  transform: scale(1.1);
+}
+
+/* ============================================================
+   DAY CARDS
+   ============================================================ */
+.day-card {
+  margin-bottom: 16px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  box-shadow: var(--card-shadow);
+  overflow: hidden;
+  transition: box-shadow 0.3s, border-color 0.3s, transform 0.3s;
+  animation: slideUp 0.5s ease both;
+}
+
+.day-card:hover {
+  box-shadow: var(--card-shadow-hover);
+  transform: translateY(-1px);
+}
+
+.day-card.done .day-header { opacity: 0.7; }
+.day-card.done .done-badge { display: flex; }
+
+/* Phase color accents */
+.day-card[data-phase="1"] { border-left: 3px solid var(--phase1); }
+.day-card[data-phase="2"] { border-left: 3px solid var(--phase2); }
+.day-card[data-phase="3"] { border-left: 3px solid var(--phase3); }
+.day-card[data-phase="4"] { border-left: 3px solid var(--phase4); }
+
+.day-card[data-phase="1"] .day-num { color: var(--phase1); }
+.day-card[data-phase="2"] .day-num { color: var(--phase2); }
+.day-card[data-phase="3"] .day-num { color: var(--phase3); }
+.day-card[data-phase="4"] .day-num { color: var(--phase4); }
+
+/* Header */
+.day-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 24px;
+  cursor: pointer;
+  transition: background 0.2s;
+  user-select: none;
+}
+.day-header:hover { background: var(--surface2); }
+
+.day-check {
+  width: 22px; height: 22px;
+  border-radius: 6px;
+  border: 2px solid var(--border2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: border-color 0.2s, background 0.2s;
+  cursor: pointer;
+}
+
+.day-card.done .day-check {
+  background: var(--success);
+  border-color: var(--success);
+}
+
+.day-check svg { display: none; }
+.day-card.done .day-check svg { display: block; }
+
+.day-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  min-width: 46px;
+  flex-shrink: 0;
+}
+
+.day-title-wrap { flex: 1; }
+
+.day-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.3;
+}
+
+.day-subtitle {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--text3);
+  margin-top: 2px;
+  letter-spacing: 0.3px;
+}
+
+.day-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.day-hours {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--text3);
+  background: var(--bg3);
+  padding: 3px 8px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.done-badge {
+  display: none;
+  align-items: center;
+  gap: 4px;
+  background: rgba(90,240,151,0.1);
+  border: 1px solid rgba(90,240,151,0.25);
+  border-radius: 4px;
+  padding: 3px 8px;
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--success);
+}
+
+.chevron {
+  width: 16px; height: 16px;
+  color: var(--text3);
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+}
+.day-card.open .chevron { transform: rotate(180deg); }
+
+/* Body */
+.day-body {
+  display: none;
+  border-top: 1px solid var(--border);
+}
+
+.day-card.open .day-body {
+  display: block;
+  animation: expandIn 0.3s ease;
+}
+
+@keyframes expandIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.day-content {
+  padding: 28px 24px 24px 86px;
+}
+
+/* Sections within day */
+.content-section { margin-bottom: 28px; }
+.content-section:last-child { margin-bottom: 0; }
+
+.section-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+  max-width: 120px;
+}
+
+.topic-list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 6px;
+}
+
+.topic-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px 12px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.4;
+  transition: border-color 0.2s, background 0.2s;
+}
+.topic-item:hover { border-color: var(--border2); background: var(--surface2); }
+
+.topic-bullet {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  margin-top: 5px;
+  flex-shrink: 0;
+}
+.day-card[data-phase="1"] .topic-bullet { background: var(--phase1); }
+.day-card[data-phase="2"] .topic-bullet { background: var(--phase2); }
+.day-card[data-phase="3"] .topic-bullet { background: var(--phase3); }
+.day-card[data-phase="4"] .topic-bullet { background: var(--phase4); }
+
+/* Code blocks */
+.code-block {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 12px 0;
+}
+
+.code-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 14px;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+}
+
+.code-lang {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text3);
+}
+
+.code-dots { display: flex; gap: 5px; }
+.code-dots span {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--border2);
+}
+.code-dots span:nth-child(1) { background: #ff5f57; }
+.code-dots span:nth-child(2) { background: #febc2e; }
+.code-dots span:nth-child(3) { background: #28c840; }
+
+.code-block pre {
+  padding: 16px;
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text2);
+  overflow-x: auto;
+  tab-size: 2;
+}
+
+.code-block pre .kw { color: var(--blue); }
+.code-block pre .str { color: var(--teal); }
+.code-block pre .cmt { color: var(--text3); font-style: italic; }
+.code-block pre .num { color: var(--gold); }
+.code-block pre .fn { color: var(--coral); }
+
+/* Deliverable box */
+.deliverable {
+  display: flex;
+  gap: 14px;
+  padding: 16px 18px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-top: 16px;
+}
+
+.deliverable-icon {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 15px;
+}
+
+.day-card[data-phase="1"] .deliverable-icon { background: var(--phase1-bg); }
+.day-card[data-phase="2"] .deliverable-icon { background: var(--phase2-bg); }
+.day-card[data-phase="3"] .deliverable-icon { background: var(--phase3-bg); }
+.day-card[data-phase="4"] .deliverable-icon { background: var(--phase4-bg); }
+
+.deliverable-content {}
+.deliverable-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 4px;
+}
+.deliverable-text {
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.5;
+}
+
+/* Fast track callout */
+.fast-track {
+  display: flex;
+  gap: 12px;
+  padding: 14px 16px;
+  background: var(--phase4-bg);
+  border: 1px solid rgba(108,142,245,0.25);
+  border-radius: 8px;
+  margin-top: 16px;
+}
+
+.fast-track-icon {
+  font-size: 14px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.fast-track-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--phase4);
+  margin-bottom: 4px;
+}
+
+.fast-track-text {
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.5;
+}
+
+/* Cozempic highlight box */
+.cozempic-box {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 16px 0;
+}
+
+.cozempic-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  background: var(--phase3-bg);
+  border-bottom: 1px solid var(--border);
+}
+
+.cozempic-logo {
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--phase3);
+  letter-spacing: -0.5px;
+}
+
+.cozempic-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text3);
+  background: var(--bg3);
+  padding: 2px 7px;
+  border-radius: 3px;
+  border: 1px solid var(--border);
+}
+
+.cozempic-body { padding: 16px 18px; }
+
+.cozempic-desc {
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.6;
+  margin-bottom: 14px;
+}
+
+.strategy-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.strategy-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+}
+
+.strategy-name { color: var(--text2); }
+.strategy-save { color: var(--phase3); font-size: 10px; }
+
+/* Prescription pills */
+.rx-pills {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.rx-pill {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  border: 1px solid;
+}
+.rx-pill.gentle { color: var(--teal); border-color: rgba(78,205,196,0.3); background: rgba(78,205,196,0.08); }
+.rx-pill.standard { color: var(--gold); border-color: rgba(240,192,64,0.3); background: rgba(240,192,64,0.08); }
+.rx-pill.aggressive { color: var(--coral); border-color: rgba(232,130,92,0.3); background: rgba(232,130,92,0.08); }
+
+/* YouTube embed */
+.video-section { margin-top: 20px; }
+
+.video-wrapper {
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: #000;
+  position: relative;
+}
+
+.video-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+}
+
+.video-creator {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--text3);
+  letter-spacing: 0.5px;
+}
+
+.video-date {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--text3);
+}
+
+.video-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text2);
+  padding: 8px 14px 0;
+  background: var(--bg2);
+}
+
+.yt-iframe {
+  width: 100%;
+  aspect-ratio: 16/9;
+  border: none;
+  display: block;
+}
+
+/* ============================================================
+   RESOURCES FOOTER
+   ============================================================ */
+.resources-section {
+  margin-top: 80px;
+  border-top: 1px solid var(--border);
+  padding-top: 60px;
+}
+
+.resources-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: 36px;
+  font-weight: 400;
+  letter-spacing: -0.5px;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.resources-sub {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--text3);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 40px;
+}
+
+.resources-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.resource-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px;
+  transition: var(--card-shadow) 0.2s, transform 0.2s, border-color 0.2s;
+}
+.resource-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--border2);
+  box-shadow: var(--card-shadow-hover);
+}
+
+.resource-type {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 10px;
+}
+
+.resource-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.resource-desc {
+  font-size: 12px;
+  color: var(--text2);
+  line-height: 1.5;
+}
+
+.resource-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--accent);
+  margin-top: 10px;
+  text-decoration: none;
+}
+.resource-link:hover { text-decoration: underline; }
+
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.day-card:nth-child(1) { animation-delay: 0.05s; }
+.day-card:nth-child(2) { animation-delay: 0.10s; }
+.day-card:nth-child(3) { animation-delay: 0.15s; }
+.day-card:nth-child(4) { animation-delay: 0.20s; }
+.day-card:nth-child(5) { animation-delay: 0.25s; }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 700px) {
+  .header { padding: 80px 24px 60px; }
+  .main { padding: 40px 16px 80px; }
+  .header-stats { flex-wrap: wrap; width: 100%; }
+  .stat { flex: 1; min-width: 100px; }
+  .day-content { padding: 20px 16px 16px 16px; }
+  .topic-list { grid-template-columns: 1fr; }
+  .week-number { font-size: 48px; min-width: 56px; }
+  .theme-toggle { top: 12px; right: 12px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Neural canvas -->
+<canvas id="neural-canvas"></canvas>
+
+<!-- Progress bar -->
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- Theme toggle -->
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+  <div class="toggle-track">
+    <div class="toggle-thumb"></div>
+  </div>
+  <span class="toggle-label" id="toggleLabel">DARK</span>
+</button>
+
+<!-- ============================================================
+     HEADER
+     ============================================================ -->
+<header class="header">
+  <div class="header-inner">
+    <div class="header-eyebrow">
+      <div class="anthropic-badge">
+        <svg class="anthropic-logo" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M9 1L16.5 15H1.5L9 1Z" fill="currentColor" opacity="0.8"/>
+        </svg>
+        <span class="badge-text">Anthropic · Claude Code</span>
+      </div>
+      <div class="header-divider"></div>
+      <span class="header-date">Engineering Program · 2026</span>
+    </div>
+
+    <h1>
+      2-Week<br>
+      <em>Mastery</em> Roadmap
+    </h1>
+
+    <p class="header-sub">
+      From first install to orchestrating multi-agent development teams. Every concept builds on the last — by Day 10, your engineers will be running parallel AI agent squads on real production work.
+    </p>
+
+    <div class="header-stats">
+      <div class="stat">
+        <div class="stat-value">10</div>
+        <div class="stat-label">Days</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">4–5h</div>
+        <div class="stat-label">Per Day</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">4</div>
+        <div class="stat-label">Phases</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">∞</div>
+        <div class="stat-label">Agents</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ============================================================
+     MAIN CONTENT
+     ============================================================ -->
+<main class="main" id="main">
+
+  <!-- ═══════════════════════════════════════
+       WEEK 1
+       ═══════════════════════════════════════ -->
+  <div class="week-header">
+    <div class="week-number">01</div>
+    <div class="week-info">
+      <div class="week-title">From Zero to Fluent</div>
+      <div class="week-subtitle">Phase 1 — Foundations · Phase 2 — Power Patterns · Phase 3 — Context Engineering</div>
+    </div>
+    <div class="week-progress-track" id="week1-dots">
+      <div class="week-dot" data-day="1"></div>
+      <div class="week-dot" data-day="2"></div>
+      <div class="week-dot" data-day="3"></div>
+      <div class="week-dot" data-day="4"></div>
+      <div class="week-dot" data-day="5"></div>
+    </div>
+  </div>
+
+  <!-- ─── DAY 1 ─── -->
+  <div class="day-card" data-phase="1" data-day="1" id="day-1">
+    <div class="day-header" onclick="toggleCard(1)">
+      <div class="day-check" onclick="markDone(event,1)">
+        <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <span class="day-num">Day 01</span>
+      <div class="day-title-wrap">
+        <div class="day-title">Setup, Mental Model & First Contact</div>
+        <div class="day-subtitle">Phase 1 — Foundations</div>
+      </div>
+      <div class="day-meta">
+        <span class="day-hours">~4 hrs</span>
+        <span class="done-badge">✓ Done</span>
+        <svg class="chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+    </div>
+    <div class="day-body">
+      <div class="day-content">
+        <div class="content-section">
+          <div class="section-label">Core Topics</div>
+          <ul class="topic-list">
+            <li class="topic-item"><span class="topic-bullet"></span>Install via npm (<code>npm install -g @anthropic-ai/claude-code</code>), Node 18+, authenticate</li>
+            <li class="topic-item"><span class="topic-bullet"></span>Run <code>claude</code> in a real project directory — not a sandbox</li>
+            <li class="topic-item"><span class="topic-bullet"></span>The execution loop: plan → act → verify. Watch it run without touching it.</li>
+            <li class="topic-item"><span class="topic-bullet"></span>Trust levels, the permission model, and what <code>--dangerously-skip-permissions</code> actually means</li>
+            <li class="topic-item"><span class="topic-bullet"></span>Why this is fundamentally different from Cursor/Copilot — autonomous agent vs. autocomplete</li>
+            <li class="topic-item"><span class="topic-bullet"></span>Give Claude a real ticket. Review the diff. Understand every change.</li>
+          </ul>
+        </div>
+
+        <div class="fast-track">
+          <span class="fast-track-icon">⚡</span>
+          <div>
+            <div class="fast-track-label">Fast Track — Already used Claude Code?</div>
+            <div class="fast-track-text">Skip install. Jump straight to the permission model deep-dive and spend the second half on CLAUDE.md architecture planning for Day 2.</div>
+          </div>
+        </div>
+
+        <div class="deliverable">
+          <div class="deliverable-icon">📋</div>
+          <div class="deliverable-content">
+            <div class="deliverable-label">Day 1 Deliverable</div>
+            <div class="deliverable-text">One real ticket from your backlog, shipped via Claude Code. Team check-in: what broke, what surprised you, where did Claude exceed expectations?</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── DAY 2 ─── -->
+  <div class="day-card" data-phase="1" data-day="2" id="day-2">
+    <div class="day-header" onclick="toggleCard(2)">
+      <div class="day-check" onclick="markDone(event,2)">
+        <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <span class="day-num">Day 02</span>
+      <div class="day-title-wrap">
+        <div class="day-title">CLAUDE.md & First Real PR</div>
+        <div class="day-subtitle">Phase 1 — Context Architecture</div>
+      </div>
+      <div class="day-meta">
+        <span class="day-hours">~5 hrs</span>
+        <span class="done-badge">✓ Done</span>
+        <svg class="chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+    </div>
+    <div class="day-body">
+      <div class="day-content">
+        <div class="content-section">
+          <div class="section-label">Core Topics</div>
+          <ul class="topic-list">
+            <li class="topic-item"><span class="topic-bullet"></span>Write your first CLAUDE.md — the highest-leverage hour in the roadmap</li>
+            <li class="topic-item"><span class="topic-bullet"></span>What belongs in CLAUDE.md: architecture overview, conventions, key files, bash commands, hard prohibitions</li>
+            <li class="topic-item"><span class="topic-bullet"></span>Global (<code>~/.claude/CLAUDE.md</code>) vs. project-level vs. subdirectory-level — set up all three</li>
+            <li class="topic-item"><span class="topic-bullet"></span>Ship a real ticket end-to-end via Claude Code. Review every file touched.</li>
+            <li class="topic-item"><span class="topic-bullet"></span>Team retrospective at day-end</li>
+          </ul>
+        </div>
+
+        <div class="content-section">
+          <div class="section-label">CLAUDE.md Structure Template</div>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-lang">CLAUDE.md</span>
+            </div>
+            <pre><span class="cmt"># Project: [Name]</span>
+
+<span class="kw">## Architecture</span>
+<span class="str">Monorepo. API in /server (Express), client in /web (Next.js 14).</span>
+
+<span class="kw">## Conventions</span>
+<span class="str">- TypeScript strict. No `any`. Zod for all external data.</span>
+<span class="str">- Tests co-located: foo.test.ts next to foo.ts</span>
+<span class="str">- Never commit secrets or TODO comments</span>
+
+<span class="kw">## Key Commands</span>
+<span class="fn">pnpm dev</span>     <span class="cmt"># starts everything</span>
+<span class="fn">pnpm test</span>    <span class="cmt"># run all tests</span>
+<span class="fn">pnpm typecheck</span> <span class="cmt"># strict TS check</span>
+
+<span class="kw">## Never Do</span>
+<span class="str">- Never modify /migrations directly</span>
+<span class="str">- Never use console.log in production code</span></pre>
+          </div>
+        </div>
+
+        <div class="deliverable">
+          <div class="deliverable-icon">🗂️</div>
+          <div class="deliverable-content">
+            <div class="deliverable-label">Day 2 Deliverable</div>
+            <div class="deliverable-text">Working CLAUDE.md committed to your primary repo (all three levels). One real PR shipped. Team peer-reviews each other's CLAUDE.md files — this is surprisingly high-value.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── DAY 3 ─── -->
+  <div class="day-card" data-phase="2" data-day="3" id="day-3">
+    <div class="day-header" onclick="toggleCard(3)">
+      <div class="day-check" onclick="markDone(event,3)">
+        <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <span class="day-num">Day 03</span>
+      <div class="day-title-wrap">
+        <div class="day-title">Plan Mode, Prompting & Spec-Driven Flow</div>
+        <div class="day-subtitle">Phase 2 — Power Patterns</div>
+      </div>
+      <div class="day-meta">
+        <span class="day-hours">~4 hrs</span>
+        <span class="done-badge">✓ Done</span>
+        <svg class="chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+    </div>
+    <div class="day-body">
+      <div class="day-content">
+        <div class="content-section">
+          <div class="section-label">Core Topics</div>
+          <ul class="topic-list">
+            <li class="topic-item"><span class="topic-bullet"></span><strong>Plan mode is non-negotiable.</strong> Shift+Tab before every non-trivial task</li>
+            <li class="topic-item"><span class="topic-bullet"></span>"Think hard about 3 possible approaches" genuinely changes output quality</li>
+            <li class="topic-item"><span class="topic-bullet"></span>The spec → todo → code flow: <code>spec.md</code> first, then <code>todo.md</code>, then execute milestone-by-milestone</li>
+            <li class="topic-item"><span class="topic-bullet"></span>Referencing files: <code>@filename</code> syntax, Shift+drag, line numbers, function names</li>
+            <li class="topic-item"><span class="topic-bullet"></span><code>/clear</code> = reset conversation but keep CLAUDE.md. Use aggressively, constantly, without guilt</li>
+            <li class="topic-item"><span class="topic-bullet"></span>Context noise is the #1 source of degraded output — clearing is hygiene, not loss</li>
+          </ul>
+        </div>
+
+        <div class="video-section">
+          <div class="section-label">Watch</div>
+          <div class="video-wrapper">
+            <div class="video-title">The Ultimate Guide to Claude Code — Top Strategies</div>
+            <iframe class="yt-iframe" src="https://www.youtube.com/embed/amEUIuBKwvg" title="The Ultimate Guide to Claude Code" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+            <div class="video-meta">
+              <span class="video-creator">Cole Medin</span>
+              <span class="video-date">Aug 29, 2025</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="fast-track">
+          <span class="fast-track-icon">⚡</span>
+          <div>
+            <div class="fast-track-label">Fast Track</div>
+            <div class="fast-track-text">Skip basics. Build a custom slash command for your team's most common task pattern (e.g., <code>/new-feature</code> that auto-generates spec.md + todo.md).</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── DAY 4 ─── -->
+  <div class="day-card" data-phase="2" data-day="4" id="day-4">
+    <div class="day-header" onclick="toggleCard(4)">
+      <div class="day-check" onclick="markDone(event,4)">
+        <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <span class="day-num">Day 04</span>
+      <div class="day-title-wrap">
+        <div class="day-title">Commands, Config & Git Hygiene</div>
+        <div class="day-subtitle">Phase 2 — Settings, Hooks & Safety</div>
+      </div>
+      <div class="day-meta">
+        <span class="day-hours">~5 hrs</span>
+        <span class="done-badge">✓ Done</span>
+        <svg class="chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+    </div>
+    <div class="day-body">
+      <div class="day-content">
+        <div class="content-section">
+          <div class="section-label">Core Topics</div>
+          <ul class="topic-list">
+            <li class="topic-item"><span class="topic-bullet"></span>Slash commands: <code>/compact</code>, <code>/context</code>, <code>/clear</code>, <code>/resume</code>, <code>/install-github-app</code></li>
+            <li class="topic-item"><span class="topic-bullet"></span><code>.claude/settings.json</code> — configure silent actions, approval-required actions, always-blocked actions</li>
+            <li class="topic-item"><span class="topic-bullet"></span>Git worktrees for parallel work. <code>git commit</code> before every Claude task — not optional</li>
+            <li class="topic-item"><span class="topic-bullet"></span>Output modes: <code>explanatory</code> (Claude narrates decisions) vs. <code>learning</code> (leaves TODOs for you)</li>
+            <li class="topic-item"><span class="topic-bullet"></span>Model selection: Sonnet 4.6 for most tasks, Opus 4.6 for deep architecture/debugging reasoning</li>
+            <li class="topic-item"><span class="topic-bullet"></span>GitHub PR review via <code>/install-github-app</code> — customize <code>claude-code-review.yml</code> to flag bugs/security only</li>
+          </ul>
+        </div>
+
+        <div class="content-section">
+          <div class="section-label">Settings Template</div>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-lang">.claude/settings.json</span>
+            </div>
+            <pre>{
+  <span class="str">"permissions"</span>: {
+    <span class="str">"allow"</span>: [<span class="str">"Bash(git *)"</span>, <span class="str">"Bash(pnpm *)"</span>, <span class="str">"Read(*)"</span>],
+    <span class="str">"deny"</span>:  [<span class="str">"Bash(rm -rf *)"</span>, <span class="str">"Bash(curl *)"</span>]
+  },
+  <span class="str">"model"</span>: <span class="str">"claude-sonnet-4-6"</span>
+}</pre>
+          </div>
+        </div>
+
+        <div class="deliverable">
+          <div class="deliverable-icon">⚙️</div>
+          <div class="deliverable-content">
+            <div class="deliverable-label">Day 4 Deliverable</div>
+            <div class="deliverable-text">A shared <code>.claude/settings.json</code> template committed to the org repo. Each engineer's CLAUDE.md rewritten based on 4 days of real use.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── DAY 5 ─── -->
+  <div class="day-card" data-phase="3" data-day="5" id="day-5">
+    <div class="day-header" onclick="toggleCard(5)">
+      <div class="day-check" onclick="markDone(event,5)">
+        <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <span class="day-num">Day 05</span>
+      <div class="day-title-wrap">
+        <div class="day-title">Context Engineering + Cozempic</div>
+        <div class="day-subtitle">Phase 3 — Optimization (install this before Week 2)</div>
+      </div>
+      <div class="day-meta">
+        <span class="day-hours">~5 hrs</span>
+        <span class="done-badge">✓ Done</span>
+        <svg class="chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+    </div>
+    <div class="day-body">
+      <div class="day-content">
+        <div class="content-section">
+          <div class="section-label">Context Engineering (~2 hrs)</div>
+          <ul class="topic-list">
+            <li class="topic-item"><span class="topic-bullet"></span>Context quality ≈ output quality. This is the lever, not prompting.</li>
+            <li class="topic-item"><span class="topic-bullet"></span>Context packing: dump architecture constraints, known pitfalls, examples of good output before the first message</li>
+            <li class="topic-item"><span class="topic-bullet"></span>MCP servers: inject live docs via Context7 instead of relying on stale training data</li>
+            <li class="topic-item"><span class="topic-bullet"></span>Layered CLAUDE.md in practice: walk through a complex real-world example with subdirectory rules</li>
+          </ul>
+        </div>
+
+        <div class="content-section">
+          <div class="section-label">Cozempic — Install Today (~3 hrs)</div>
+          <div class="cozempic-box">
+            <div class="cozempic-header">
+              <span class="cozempic-logo">💊 Cozempic</span>
+              <span class="cozempic-tag">Context Cleaning</span>
+              <span class="cozempic-tag">pip install cozempic</span>
+            </div>
+            <div class="cozempic-body">
+              <p class="cozempic-desc">Sessions fill up with dead weight: progress ticks, repeated thinking blocks, stale file reads, duplicate document injections — typically 8–46MB of noise per session. Cozempic removes it using 13 composable strategies while leaving your actual conversation, decisions, and tool results untouched. <strong>Critical for Week 2:</strong> when a lead agent's context gets auto-compacted, team coordination messages are discarded and subagents are orphaned. Cozempic prevents this.</p>
+
+              <div class="strategy-grid">
+                <div class="strategy-item"><span class="strategy-name">progress-collapse</span><span class="strategy-save">40–48%</span></div>
+                <div class="strategy-item"><span class="strategy-name">thinking-blocks</span><span class="strategy-save">2–5%</span></div>
+                <div class="strategy-item"><span class="strategy-name">tool-output-trim</span><span class="strategy-save">1–8%</span></div>
+                <div class="strategy-item"><span class="strategy-name">stale-reads</span><span class="strategy-save">0.5–2%</span></div>
+                <div class="strategy-item"><span class="strategy-name">metadata-strip</span><span class="strategy-save">1–3%</span></div>
+                <div class="strategy-item"><span class="strategy-name">document-dedup</span><span class="strategy-save">0–44%</span></div>
+              </div>
+
+              <div class="rx-pills">
+                <span class="rx-pill gentle">gentle · 5–8%</span>
+                <span class="rx-pill standard">standard · 15–20%</span>
+                <span class="rx-pill aggressive">aggressive · 20–25%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="content-section">
+          <div class="section-label">Setup Commands</div>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-lang">bash</span>
+            </div>
+            <pre><span class="fn">pip install</span> cozempic
+<span class="fn">cd</span> your-project/
+<span class="fn">cozempic</span> init           <span class="cmt"># wires hooks + slash command</span>
+<span class="fn">cozempic</span> current --diagnose
+<span class="fn">cozempic</span> treat current   <span class="cmt"># dry-run, safe to run</span>
+<span class="fn">cozempic</span> guard           <span class="cmt"># start background daemon</span></pre>
+          </div>
+
+          <div class="code-block" style="margin-top:10px">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-lang">.claude/settings.json — hooks</span>
+            </div>
+            <pre>{
+  <span class="str">"hooks"</span>: {
+    <span class="str">"PostToolUse"</span>: [{
+      <span class="str">"matcher"</span>: <span class="str">"Task|TaskCreate|TaskUpdate"</span>,
+      <span class="str">"hooks"</span>: [{<span class="str">"type"</span>: <span class="str">"command"</span>,
+        <span class="str">"command"</span>: <span class="str">"cozempic checkpoint 2>/dev/null || true"</span>}]
+    }],
+    <span class="str">"PreCompact"</span>: [{<span class="str">"matcher"</span>: <span class="str">""</span>,
+      <span class="str">"hooks"</span>: [{<span class="str">"type"</span>: <span class="str">"command"</span>,
+        <span class="str">"command"</span>: <span class="str">"cozempic checkpoint 2>/dev/null || true"</span>}]
+    }]
+  }
+}</pre>
+          </div>
+        </div>
+
+        <div class="deliverable">
+          <div class="deliverable-icon">🛡️</div>
+          <div class="deliverable-content">
+            <div class="deliverable-label">Day 5 Deliverable</div>
+            <div class="deliverable-text">Cozempic installed on every engineer's machine, <code>init</code> run, guard daemon tested. Each engineer runs <code>diagnose</code> on an existing session and reports the bloat breakdown. You are now ready for Week 2.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       WEEK 2
+       ═══════════════════════════════════════ -->
+  <div class="week-header">
+    <div class="week-number">02</div>
+    <div class="week-info">
+      <div class="week-title">Agent Teams & Production Patterns</div>
+      <div class="week-subtitle">Phase 4 — Multi-Agent Orchestration · Target: Autonomous parallel development</div>
+    </div>
+    <div class="week-progress-track" id="week2-dots">
+      <div class="week-dot" data-day="6"></div>
+      <div class="week-dot" data-day="7"></div>
+      <div class="week-dot" data-day="8"></div>
+      <div class="week-dot" data-day="9"></div>
+      <div class="week-dot" data-day="10"></div>
+    </div>
+  </div>
+
+  <!-- ─── DAY 6 ─── -->
+  <div class="day-card" data-phase="4" data-day="6" id="day-6">
+    <div class="day-header" onclick="toggleCard(6)">
+      <div class="day-check" onclick="markDone(event,6)">
+        <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <span class="day-num">Day 06</span>
+      <div class="day-title-wrap">
+        <div class="day-title">Agent Teams: Architecture & First Team</div>
+        <div class="day-subtitle">Phase 4 — Enable, Understand, Execute</div>
+      </div>
+      <div class="day-meta">
+        <span class="day-hours">~5 hrs</span>
+        <span class="done-badge">✓ Done</span>
+        <svg class="chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+    </div>
+    <div class="day-body">
+      <div class="day-content">
+        <div class="content-section">
+          <div class="section-label">Enable Agent Teams</div>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-lang">.claude/settings.json</span>
+            </div>
+            <pre>{
+  <span class="str">"env"</span>: {
+    <span class="str">"CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS"</span>: <span class="str">"1"</span>
+  }
+}</pre>
+          </div>
+        </div>
+
+        <div class="content-section">
+          <div class="section-label">Architecture — Three Components</div>
+          <ul class="topic-list">
+            <li class="topic-item"><span class="topic-bullet"></span><strong>Team Lead</strong> — your main Claude Code session. Creates team, assigns tasks, synthesizes. In delegate mode: coordinates, does not implement.</li>
+            <li class="topic-item"><span class="topic-bullet"></span><strong>Teammates</strong> — separate Claude Code instances. Own context windows. Load same CLAUDE.md + MCPs. No inheritance of lead's conversation.</li>
+            <li class="topic-item"><span class="topic-bullet"></span><strong>Shared task list</strong> — markdown file. Agents claim tasks, update progress, auto-unblock dependencies. File locking prevents conflicts.</li>
+            <li class="topic-item"><span class="topic-bullet"></span><strong>Mailbox system</strong> — direct peer-to-peer messaging between any agents. No lead required as intermediary.</li>
+            <li class="topic-item"><span class="topic-bullet"></span>Key distinction: subagents report to one parent, can't talk to each other. Teammates message directly, challenge findings, self-coordinate.</li>
+            <li class="topic-item"><span class="topic-bullet"></span>Task states: <code>pending → in_progress → completed</code>. Teammates self-claim next unblocked task on completion.</li>
+          </ul>
+        </div>
+
+        <div class="content-section">
+          <div class="section-label">Watch — Agent Teams Explained</div>
+          <div class="video-wrapper">
+            <div class="video-title">Claude Code Agent Teams Explained — Complete Guide</div>
+            <iframe class="yt-iframe" src="https://www.youtube.com/embed/1jlKUxqRQAw" title="Claude Code Agent Teams Explained" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+            <div class="video-meta">
+              <span class="video-creator">Mark Kashef</span>
+              <span class="video-date">Feb 8, 2026</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="deliverable">
+          <div class="deliverable-icon">🤖</div>
+          <div class="deliverable-content">
+            <div class="deliverable-label">Day 6 Deliverable</div>
+            <div class="deliverable-text">Run a parallel code review: 4 teammates, each with a different lens — security, performance, test coverage, architecture — reviewing the same PR. Compare their reports. Note where they agree and where they conflict.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── DAY 7 ─── -->
+  <div class="day-card" data-phase="4" data-day="7" id="day-7">
+    <div class="day-header" onclick="toggleCard(7)">
+      <div class="day-check" onclick="markDone(event,7)">
+        <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <span class="day-num">Day 07</span>
+      <div class="day-title-wrap">
+        <div class="day-title">Spawn Prompts, Display Modes & Lifecycle</div>
+        <div class="day-subtitle">Phase 4 — Agent Team Mechanics</div>
+      </div>
+      <div class="day-meta">
+        <span class="day-hours">~4 hrs</span>
+        <span class="done-badge">✓ Done</span>
+        <svg class="chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+    </div>
+    <div class="day-body">
+      <div class="day-content">
+        <div class="content-section">
+          <div class="section-label">Spawn Prompts — The Most Important Skill</div>
+          <ul class="topic-list">
+            <li class="topic-item"><span class="topic-bullet"></span>Teammates don't inherit context. A vague spawn prompt = a confused agent.</li>
+            <li class="topic-item"><span class="topic-bullet"></span>Every spawn prompt must include: exact files/scope, acceptance criteria, what to do on completion, who to report to</li>
+            <li class="topic-item"><span class="topic-bullet"></span>Team size sweet spot: 5–6 agents. Beyond that, diminishing returns set in fast.</li>
+          </ul>
+
+          <div class="code-block" style="margin-top:14px">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-lang">Good spawn prompt</span>
+            </div>
+            <pre><span class="str">Review app/models/user.rb for N+1 queries.</span>
+<span class="str">Check all ActiveRecord associations have proper includes.</span>
+<span class="str">Document findings in review-notes.md.</span>
+<span class="str">Send summary to team-lead via Teammate write.</span></pre>
+          </div>
+        </div>
+
+        <div class="content-section">
+          <div class="section-label">Display Modes</div>
+          <ul class="topic-list">
+            <li class="topic-item"><span class="topic-bullet"></span><strong>In-process</strong> — all teammates in main terminal. Fastest, no visibility into individual agents.</li>
+            <li class="topic-item"><span class="topic-bullet"></span><strong>tmux split panes</strong> — each teammate gets its own pane. <code>Shift+Down</code> to cycle. Recommended default.</li>
+            <li class="topic-item"><span class="topic-bullet"></span><strong>iTerm2</strong> — teammates as split panes in your iTerm2 window. Set up today and leave as default.</li>
+          </ul>
+        </div>
+
+        <div class="content-section">
+          <div class="section-label">Lifecycle Rules</div>
+          <ul class="topic-list">
+            <li class="topic-item"><span class="topic-bullet"></span>Always shut down teammates before cleanup. The lead runs cleanup — teammates' context may not resolve correctly.</li>
+            <li class="topic-item"><span class="topic-bullet"></span>Run <code>cozempic checkpoint</code> before any shutdown to preserve team state to disk.</li>
+            <li class="topic-item"><span class="topic-bullet"></span>Use <code>Shift+Up/Down</code> in in-process mode to select and message individual teammates directly.</li>
+          </ul>
+        </div>
+
+        <div class="deliverable">
+          <div class="deliverable-icon">🖥️</div>
+          <div class="deliverable-content">
+            <div class="deliverable-label">Day 7 Deliverable</div>
+            <div class="deliverable-text">tmux split-pane display mode configured as default. A spawn prompt template committed to the repo for your most common team configuration (review team, implementation team, or research team).</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── DAY 8 ─── -->
+  <div class="day-card" data-phase="4" data-day="8" id="day-8">
+    <div class="day-header" onclick="toggleCard(8)">
+      <div class="day-check" onclick="markDone(event,8)">
+        <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <span class="day-num">Day 08</span>
+      <div class="day-title-wrap">
+        <div class="day-title">Competing Hypotheses & Contract-First Spawning</div>
+        <div class="day-subtitle">Phase 4 — Advanced Patterns</div>
+      </div>
+      <div class="day-meta">
+        <span class="day-hours">~5 hrs</span>
+        <span class="done-badge">✓ Done</span>
+        <svg class="chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+    </div>
+    <div class="day-body">
+      <div class="day-content">
+        <div class="content-section">
+          <div class="section-label">The Competing Hypotheses Pattern</div>
+          <p style="font-size:13px; color:var(--text2); line-height:1.6; margin-bottom:14px;">The killer use case that single agents structurally can't replicate. Sequential investigation anchors on the first plausible theory. Multiple independent investigators trying to disprove each other converge on actual root causes significantly faster.</p>
+
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-lang">Debugging swarm prompt</span>
+            </div>
+            <pre><span class="str">Production API returning 500s intermittently.</span>
+<span class="str">Create a debugging team with 3 agents:</span>
+
+<span class="str">Agent A: investigate database connection pool exhaustion</span>
+<span class="str">Agent B: investigate race condition in the caching layer</span>
+<span class="str">Agent C: investigate memory leak in the request handler</span>
+
+<span class="str">Share evidence via mailbox. Challenge each other's findings.</span>
+<span class="str">Report consensus (or dissent) to team-lead when complete.</span></pre>
+          </div>
+        </div>
+
+        <div class="content-section">
+          <div class="section-label">Contract-First Spawning</div>
+          <ul class="topic-list">
+            <li class="topic-item"><span class="topic-bullet"></span>Before spawning any agents to build together, have the lead create a <code>contract.md</code> — endpoint specs, data shapes, error handling conventions.</li>
+            <li class="topic-item"><span class="topic-bullet"></span>Both frontend and backend agents read it before writing a line of code.</li>
+            <li class="topic-item"><span class="topic-bullet"></span>Prevents the most common failure: two agents building toward incompatible assumptions that only surface at integration time.</li>
+          </ul>
+        </div>
+
+        <div class="video-section">
+          <div class="section-label">Watch — Live Agent Teams Build</div>
+          <div class="video-wrapper">
+            <div class="video-title">Claude Code's Agent Teams Are Insane — Multiple AI Agents Coding Together</div>
+            <iframe class="yt-iframe" src="https://www.youtube.com/embed/-1K_ZWDKpU0" title="Claude Code Agent Teams Are Insane" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+            <div class="video-meta">
+              <span class="video-creator">Cole Medin</span>
+              <span class="video-date">Feb 9, 2026</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="deliverable">
+          <div class="deliverable-icon">🔬</div>
+          <div class="deliverable-content">
+            <div class="deliverable-label">Day 8 Deliverable</div>
+            <div class="deliverable-text">Run a competing hypotheses debugging swarm on a real open issue in your codebase. Document which hypothesis was right and how long convergence took vs. your typical sequential debugging process.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── DAY 9 ─── -->
+  <div class="day-card" data-phase="4" data-day="9" id="day-9">
+    <div class="day-header" onclick="toggleCard(9)">
+      <div class="day-check" onclick="markDone(event,9)">
+        <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <span class="day-num">Day 09</span>
+      <div class="day-title-wrap">
+        <div class="day-title">Quality Gates, Hooks & Cost Management</div>
+        <div class="day-subtitle">Phase 4 — Production Discipline</div>
+      </div>
+      <div class="day-meta">
+        <span class="day-hours">~4 hrs</span>
+        <span class="done-badge">✓ Done</span>
+        <svg class="chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+    </div>
+    <div class="day-body">
+      <div class="day-content">
+        <div class="content-section">
+          <div class="section-label">Team-Specific Hooks</div>
+          <ul class="topic-list">
+            <li class="topic-item"><span class="topic-bullet"></span><strong>TeammateIdle</strong>: runs when a teammate is about to go idle. Exit code 2 sends feedback and keeps them working. Use to enforce "don't stop until tests pass."</li>
+            <li class="topic-item"><span class="topic-bullet"></span><strong>TaskCompleted</strong>: runs when a task is being marked complete. Exit code 2 prevents completion. Use to enforce peer review before task closure.</li>
+            <li class="topic-item"><span class="topic-bullet"></span>Exit code 2 pattern: hook outputs feedback message → Claude reads it → continues working. This is how you enforce standards without manual intervention.</li>
+          </ul>
+        </div>
+
+        <div class="content-section">
+          <div class="section-label">Cost Management</div>
+          <ul class="topic-list">
+            <li class="topic-item"><span class="topic-bullet"></span>Each teammate is a separate Claude instance — costs ~5× a single session. Model mixing is not optional at scale.</li>
+            <li class="topic-item"><span class="topic-bullet"></span><strong>Opus 4.6</strong> for the lead/orchestrator (strategic decisions, synthesis, coordination).</li>
+            <li class="topic-item"><span class="topic-bullet"></span><strong>Sonnet 4.6</strong> for executor teammates (implementation, review, testing). ~3–4× cheaper.</li>
+            <li class="topic-item"><span class="topic-bullet"></span>Reserve teams for work where parallel perspectives genuinely add value. Single sessions for everything else.</li>
+          </ul>
+        </div>
+
+        <div class="content-section">
+          <div class="section-label">Execution Patterns That Work at Scale</div>
+          <ul class="topic-list">
+            <li class="topic-item"><span class="topic-bullet"></span><strong>Feature squads</strong> — each teammate owns a separate module, no shared files. Zero merge conflicts.</li>
+            <li class="topic-item"><span class="topic-bullet"></span><strong>Research swarms</strong> — 4–6 agents investigating different aspects of the same problem, sharing findings.</li>
+            <li class="topic-item"><span class="topic-bullet"></span><strong>Builder-validator chains</strong> — one agent builds, another immediately reviews and tests. Feedback loop without the lead intervening.</li>
+          </ul>
+        </div>
+
+        <div class="deliverable">
+          <div class="deliverable-icon">🎯</div>
+          <div class="deliverable-content">
+            <div class="deliverable-label">Day 9 Deliverable</div>
+            <div class="deliverable-text">A <code>TeammateIdle</code> hook configured that enforces tests passing before an agent goes idle. Token cost analysis from this week: which tasks were worth the multi-agent overhead, and which weren't.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── DAY 10 ─── -->
+  <div class="day-card" data-phase="4" data-day="10" id="day-10">
+    <div class="day-header" onclick="toggleCard(10)">
+      <div class="day-check" onclick="markDone(event,10)">
+        <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <span class="day-num">Day 10</span>
+      <div class="day-title-wrap">
+        <div class="day-title">Integration Day & Team Calibration</div>
+        <div class="day-subtitle">Phase 4 — Open Implementation + Final Retro</div>
+      </div>
+      <div class="day-meta">
+        <span class="day-hours">~5 hrs</span>
+        <span class="done-badge">✓ Done</span>
+        <svg class="chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+    </div>
+    <div class="day-body">
+      <div class="day-content">
+        <div class="content-section">
+          <div class="section-label">Morning — Open Implementation (~3 hrs)</div>
+          <ul class="topic-list">
+            <li class="topic-item"><span class="topic-bullet"></span>Each engineer picks one real outstanding ticket and runs it as an Agent Teams task from scratch.</li>
+            <li class="topic-item"><span class="topic-bullet"></span>Rules: Cozempic guard running, CLAUDE.md current, plan mode before spawning any agents.</li>
+            <li class="topic-item"><span class="topic-bullet"></span>No assistance — this is the proof of fluency.</li>
+          </ul>
+        </div>
+
+        <div class="content-section">
+          <div class="section-label">Afternoon — Team Retrospective (~2 hrs)</div>
+          <ul class="topic-list">
+            <li class="topic-item"><span class="topic-bullet"></span>What each person shipped this week using Agent Teams</li>
+            <li class="topic-item"><span class="topic-bullet"></span>Document failure modes — they're more valuable than the successes</li>
+            <li class="topic-item"><span class="topic-bullet"></span>CLAUDE.md files reviewed and updated as a group</li>
+            <li class="topic-item"><span class="topic-bullet"></span>Token cost analysis across the full two weeks</li>
+            <li class="topic-item"><span class="topic-bullet"></span>Shared optimization playbook committed to the repo</li>
+          </ul>
+        </div>
+
+        <div class="deliverable">
+          <div class="deliverable-icon">📖</div>
+          <div class="deliverable-content">
+            <div class="deliverable-label">Final Deliverable — The Playbook</div>
+            <div class="deliverable-text">A team-owned <code>AGENT-TEAMS-PLAYBOOK.md</code> in the org repo: your patterns, failure modes, model selection decisions, spawn prompt templates, and Cozempic config recommendations. This becomes the onboarding doc for the next engineer who joins.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       RESOURCES
+       ═══════════════════════════════════════ -->
+  <div class="resources-section">
+    <div class="resources-title">Reference & Resources</div>
+    <div class="resources-sub">Official docs, community, and tooling</div>
+
+    <div class="resources-grid">
+      <div class="resource-card">
+        <div class="resource-type">Official</div>
+        <div class="resource-name">Claude Code Documentation</div>
+        <div class="resource-desc">Official docs covering Agent Teams, best practices, MCP integration, and all commands.</div>
+        <a href="https://code.claude.com/docs" target="_blank" class="resource-link">code.claude.com/docs →</a>
+      </div>
+
+      <div class="resource-card">
+        <div class="resource-type">Official Course</div>
+        <div class="resource-name">Claude Code in Action — Skilljar</div>
+        <div class="resource-desc">Free comprehensive course from Anthropic covering architecture, tool use, and context management. Fully up to date.</div>
+        <a href="https://anthropic.skilljar.com" target="_blank" class="resource-link">anthropic.skilljar.com →</a>
+      </div>
+
+      <div class="resource-card">
+        <div class="resource-type">Tool</div>
+        <div class="resource-name">Cozempic</div>
+        <div class="resource-desc">Context cleaning for Claude Code. Prune bloated sessions, protect Agent Teams from context loss, auto-guard with tiered pruning.</div>
+        <a href="https://github.com/Ruya-AI/cozempic" target="_blank" class="resource-link">github.com/Ruya-AI/cozempic →</a>
+      </div>
+
+      <div class="resource-card">
+        <div class="resource-type">Community</div>
+        <div class="resource-name">Awesome Claude Code</div>
+        <div class="resource-desc">Curated list of skills, hooks, slash commands, and orchestration tools maintained by the community.</div>
+        <a href="https://github.com/hesreallyhim/awesome-claude-code" target="_blank" class="resource-link">github.com →</a>
+      </div>
+
+      <div class="resource-card">
+        <div class="resource-type">Writing</div>
+        <div class="resource-name">Addy Osmani — Substack</div>
+        <div class="resource-desc">Deep-dives on agentic coding workflows. "My LLM Coding Workflow Going into 2026" (Dec 2025) is essential reading.</div>
+        <a href="https://addyo.substack.com" target="_blank" class="resource-link">addyo.substack.com →</a>
+      </div>
+
+      <div class="resource-card">
+        <div class="resource-type">Tool</div>
+        <div class="resource-name">Conductor (macOS)</div>
+        <div class="resource-desc">UI for running parallel Claude Code agents in isolated git worktrees. Central dashboard for reviewing and merging agent PRs.</div>
+        <a href="https://conductor.build" target="_blank" class="resource-link">conductor.build →</a>
+      </div>
+
+      <div class="resource-card">
+        <div class="resource-type">Community</div>
+        <div class="resource-name">r/ClaudeAI</div>
+        <div class="resource-desc">450k+ members. Fastest place to find solutions to specific Claude Code issues and see real-world workflows.</div>
+        <a href="https://reddit.com/r/ClaudeAI" target="_blank" class="resource-link">reddit.com/r/ClaudeAI →</a>
+      </div>
+
+      <div class="resource-card">
+        <div class="resource-type">Agent Library</div>
+        <div class="resource-name">wshobson/agents</div>
+        <div class="resource-desc">112 specialized agents, 73 plugins, pre-built orchestration patterns for common Claude Code team configurations.</div>
+        <a href="https://github.com/wshobson/agents" target="_blank" class="resource-link">github.com/wshobson/agents →</a>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- ============================================================
+     JAVASCRIPT
+     ============================================================ -->
+<script>
+// ── Theme Toggle ──────────────────────────────────────────────
+const html = document.documentElement;
+const toggleBtn = document.getElementById('themeToggle');
+const toggleLabel = document.getElementById('toggleLabel');
+
+toggleBtn.addEventListener('click', () => {
+  const isDark = html.dataset.theme === 'dark';
+  html.dataset.theme = isDark ? 'light' : 'dark';
+  toggleLabel.textContent = isDark ? 'LIGHT' : 'DARK';
+  drawNeural();
+});
+
+// ── Progress Bar ──────────────────────────────────────────────
+window.addEventListener('scroll', () => {
+  const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+  const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  const scrolled = (winScroll / height) * 100;
+  document.getElementById('progressBar').style.width = scrolled + '%';
+});
+
+// ── Day Cards Toggle ──────────────────────────────────────────
+function toggleCard(day) {
+  const card = document.getElementById('day-' + day);
+  card.classList.toggle('open');
+}
+
+// ── Mark Done ─────────────────────────────────────────────────
+const doneState = {};
+
+function markDone(e, day) {
+  e.stopPropagation();
+  const card = document.getElementById('day-' + day);
+  const isDone = card.classList.toggle('done');
+  doneState[day] = isDone;
+  updateWeekDots();
+}
+
+function updateWeekDots() {
+  const week1Days = [1,2,3,4,5];
+  const week2Days = [6,7,8,9,10];
+  [week1Days, week2Days].forEach((days, wi) => {
+    days.forEach(day => {
+      const dots = document.querySelectorAll(`[data-day="${day}"].week-dot`);
+      dots.forEach(dot => {
+        dot.classList.toggle('done', !!doneState[day]);
+      });
+    });
+  });
+}
+
+// ── Neural Mesh Canvas ────────────────────────────────────────
+const canvas = document.getElementById('neural-canvas');
+const ctx = canvas.getContext('2d');
+
+let nodes = [];
+let W, H;
+let animFrame;
+
+function resizeCanvas() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = document.body.scrollHeight;
+}
+
+function initNodes() {
+  nodes = [];
+  const count = Math.floor((W * H) / 28000);
+  for (let i = 0; i < count; i++) {
+    nodes.push({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      vx: (Math.random() - 0.5) * 0.25,
+      vy: (Math.random() - 0.5) * 0.25,
+      r: Math.random() * 1.8 + 0.6,
+      pulse: Math.random() * Math.PI * 2
+    });
+  }
+}
+
+function getColors() {
+  const dark = html.dataset.theme === 'dark';
+  return {
+    node: dark ? 'rgba(232,130,92,0.55)' : 'rgba(196,98,42,0.4)',
+    nodeAlt: dark ? 'rgba(108,142,245,0.45)' : 'rgba(45,80,200,0.35)',
+    edge: dark ? 'rgba(42,43,61,0.6)' : 'rgba(200,194,181,0.5)',
+    edgeHot: dark ? 'rgba(232,130,92,0.15)' : 'rgba(196,98,42,0.12)',
+  };
+}
+
+let lastTime = 0;
+function drawNeural(ts = 0) {
+  const dt = Math.min(ts - lastTime, 32);
+  lastTime = ts;
+  const colors = getColors();
+
+  ctx.clearRect(0, 0, W, H);
+
+  const scrollY = window.scrollY;
+  const viewTop = scrollY - 200;
+  const viewBot = scrollY + window.innerHeight + 200;
+
+  // move
+  nodes.forEach(n => {
+    n.x += n.vx;
+    n.y += n.vy;
+    n.pulse += 0.008;
+    if (n.x < 0 || n.x > W) n.vx *= -1;
+    if (n.y < 0 || n.y > H) n.vy *= -1;
+  });
+
+  const visible = nodes.filter(n => n.y > viewTop && n.y < viewBot);
+
+  // edges
+  const maxDist = 160;
+  for (let i = 0; i < visible.length; i++) {
+    for (let j = i + 1; j < visible.length; j++) {
+      const dx = visible[i].x - visible[j].x;
+      const dy = visible[i].y - visible[j].y;
+      const dist = Math.sqrt(dx*dx + dy*dy);
+      if (dist < maxDist) {
+        const alpha = 1 - dist / maxDist;
+        ctx.beginPath();
+        ctx.moveTo(visible[i].x, visible[i].y);
+        ctx.lineTo(visible[j].x, visible[j].y);
+        ctx.strokeStyle = dist < 80 ? colors.edgeHot : colors.edge;
+        ctx.globalAlpha = alpha * 0.7;
+        ctx.lineWidth = 0.6;
+        ctx.stroke();
+        ctx.globalAlpha = 1;
+      }
+    }
+  }
+
+  // nodes
+  visible.forEach((n, i) => {
+    const pulse = 0.8 + 0.2 * Math.sin(n.pulse);
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, n.r * pulse, 0, Math.PI * 2);
+    ctx.fillStyle = i % 3 === 0 ? colors.nodeAlt : colors.node;
+    ctx.globalAlpha = 0.6 + 0.4 * Math.sin(n.pulse);
+    ctx.fill();
+    ctx.globalAlpha = 1;
+  });
+
+  animFrame = requestAnimationFrame(drawNeural);
+}
+
+window.addEventListener('resize', () => {
+  cancelAnimationFrame(animFrame);
+  resizeCanvas();
+  initNodes();
+  drawNeural();
+});
+
+// Observe body mutations for height changes (new cards opening)
+const ro = new ResizeObserver(() => {
+  resizeCanvas();
+  initNodes();
+});
+ro.observe(document.body);
+
+// Init
+resizeCanvas();
+initNodes();
+drawNeural();
+
+// Open Day 1 by default
+document.getElementById('day-1').classList.add('open');
+</script>
+</body>
+</html>
